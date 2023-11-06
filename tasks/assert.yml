@@ -1,0 +1,34 @@
+---
+
+- name: assert | Test enablement
+  ansible.builtin.assert:
+    that:
+      - unit_config_enabled is defined
+      - unit_config_enabled is boolean
+      - unit_config_enabled is true
+    quiet: yes
+
+- name: assert | Test service name
+  ansible.builtin.assert:
+    that:
+      - unit_item.name is defined
+      - unit_item.name is string
+    quiet: yes
+  vars:
+    config: "{{ unit_item }}"
+  loop: "{{ unit_config }}"
+  loop_control:
+    loop_var: unit_item
+    label: "{{ unit_item.name }}.{{ unit_item.type | default(_default_unit_type) }}"
+
+- name: assert | Test service existence
+  ansible.builtin.assert:
+    that:
+      - "ansible_facts.services['{{ unit_item.name }}.{{ unit_item.type | default(_default_unit_type) }}'] is defined"
+    quiet: yes
+  vars:
+    config: "{{ unit_item }}"
+  loop: "{{ unit_config }}"
+  loop_control:
+    loop_var: unit_item
+    label: "{{ unit_item.name }}.{{ unit_item.type | default(_default_unit_type) }}"

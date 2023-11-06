@@ -1,0 +1,6 @@
+---
+# defaults file for ansible-role-unit_config
+
+_default_unit_type: "service"
+
+unit_config_enabled: false

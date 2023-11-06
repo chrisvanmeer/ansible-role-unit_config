@@ -1,0 +1,43 @@
+---
+# tasks file for ansible-role-unit_config
+
+- name: Populate service facts
+  ansible.builtin.service_facts:
+
+- name: Import assert.yml
+  ansible.builtin.import_tasks:
+    file: assert.yml
+  run_once: yes
+  delegate_to: localhost
+
+# - name: End play
+#   ansible.builtin.meta: end_play
+
+- name: Ensure override directories
+  ansible.builtin.file:
+    path: "/etc/systemd/system/{{ unit_item.name }}.service.d"
+    state: directory
+    owner: root
+    group: root
+    mode: 0755
+  vars:
+    config: "{{ unit_item }}"
+  loop: "{{ unit_config }}"
+  loop_control:
+    loop_var: unit_item
+    label: "{{ unit_item.name }}.{{ unit_item.type | default(_default_unit_type) }}"
+
+- name: Ensure overrides
+  ansible.builtin.template:
+    src: override.conf.j2
+    dest: "/etc/systemd/system/{{ unit_item.name }}.service.d/override.conf"
+    owner: root
+    group: root
+    mode: 0644
+  vars:
+    config: "{{ unit_item }}"
+  loop: "{{ unit_config }}"
+  loop_control:
+    loop_var: unit_item
+    label: "{{ unit_item.name }}.{{ unit_item.type | default(_default_unit_type) }}"
+  notify: Reload systemd
