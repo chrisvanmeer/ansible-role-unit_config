@@ -6,14 +6,14 @@
       - unit_config_enabled is defined
       - unit_config_enabled is boolean
       - unit_config_enabled is true
-    quiet: yes
+    quiet: true
 
 - name: assert | Test service name
   ansible.builtin.assert:
     that:
       - unit_item.name is defined
       - unit_item.name is string
-    quiet: yes
+    quiet: true
   vars:
     config: "{{ unit_item }}"
   loop: "{{ unit_config }}"
@@ -25,7 +25,7 @@
   ansible.builtin.assert:
     that:
       - "ansible_facts.services['{{ unit_item.name }}.{{ unit_item.type | default(_default_unit_type) }}'] is defined"
-    quiet: yes
+    quiet: true
   vars:
     config: "{{ unit_item }}"
   loop: "{{ unit_config }}"

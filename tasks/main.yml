@@ -7,8 +7,7 @@
 - name: Import assert.yml
   ansible.builtin.import_tasks:
     file: assert.yml
-  run_once: yes
-  delegate_to: localhost
+  run_once: true
 
 # - name: End play
 #   ansible.builtin.meta: end_play
@@ -19,7 +18,7 @@
     state: directory
     owner: root
     group: root
-    mode: 0755
+    mode: '0755'
   vars:
     config: "{{ unit_item }}"
   loop: "{{ unit_config }}"
@@ -33,7 +32,7 @@
     dest: "/etc/systemd/system/{{ unit_item.name }}.service.d/override.conf"
     owner: root
     group: root
-    mode: 0644
+    mode: '0644'
   vars:
     config: "{{ unit_item }}"
   loop: "{{ unit_config }}"
