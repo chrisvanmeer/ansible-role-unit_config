@@ -55,5 +55,9 @@ Example Playbook
 License
 -------
 
-BSD
+EUPL-1.2
 
+Author Information
+------------------
+
+- Chris van Meer <c.v.meer@atcomputing.nl>
