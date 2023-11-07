@@ -38,7 +38,7 @@ No dependencies.
 Example Playbook
 ----------------
 
-
+```
 - hosts: server
   become: true
 
@@ -50,6 +50,7 @@ Example Playbook
           - name: jira
             Unit:
               Before: ngninx.service
+```
 
 License
 -------
